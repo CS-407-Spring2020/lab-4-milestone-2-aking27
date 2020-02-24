@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
         locationListener = new LocationListener() {
             @Override
             public void onLocationChanged(Location location){
-
+                updateLocationInfo(location);
             }
             @Override
             public void onStatusChanged(String s, int i, Bundle  bundle){
@@ -64,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
                 locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
                 Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
                 if(location != null){
-
+                    updateLocationInfo(location);
                 }
             //}
         //}
