@@ -13,6 +13,8 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
+import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -45,20 +47,21 @@ public class MainActivity extends AppCompatActivity {
 
             }
         };
+        startListening();
 
-        if(Build.VERSION.SDK_INT < 23){
-
-        } else {
-            if(ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED){
-               ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1) ;
-            } else {
+        if(Build.VERSION.SDK_INT < 23 && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+        } //else {
+            //if(ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED){
+              // ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1) ;
+            //} else {
                 locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
                 Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
                 if(location != null){
 
                 }
-            }
-        }
+            //}
+        //}
     }
     public void startListening(){
         if(ContextCompat.checkSelfPermission(this,Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
@@ -71,5 +74,17 @@ public class MainActivity extends AppCompatActivity {
         if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
             startListening();
         }
+    }
+    public void updateLocationInfo(Location location){
+        Log.i("LocationInfo", location.toString());
+        TextView latTextView = (TextView) findViewById(R.id.textView2);
+        TextView lonTextView = (TextView) findViewById(R.id.textView3);
+        TextView altTextView = (TextView) findViewById(R.id.textView5);
+        TextView accTextView = (TextView) findViewById(R.id.textView4);
+        latTextView.setText("Latitude: " + location.getLatitude());
+        lonTextView.setText("Longitude: " + location.getLongitude());
+        altTextView.setText("Altitude: " + location.getAltitude());
+        accTextView.setText("Accuracy: " + location.getAccuracy());
+
     }
 }
